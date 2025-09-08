@@ -436,13 +436,37 @@
     Last glacial maximum (LGM; ~21,000 years BP):http://biogeo.ucdavis.edu/data/climate/worldclim/1_4/grid/pst/21k/wc_2_5m_CCSM_21k_bio.zip
     Mid-Holocene (~6000 BP):http://biogeo.ucdavis.edu/data/climate/cmip5/mid/cnmidbi_2-5m.zip
     Current climate: https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip
-
+    # we preformance the niche build with the maxent in the arcgis software.
 #### 3.15 Environmental factor analysis
 
+    # we first extract the enviromental date of sites, and performance the t-test between North and South groups with python scripts (see 3_14_t_test4envs.py in the scripts directory)
+    # then we do the pca analysis of the enviromental factors with python scripts (see 3_14_envs_pca.py in the scripts directory)
 
-#### 3.16 Adaptation-related genes and regions identification
+
+### 3.16 Adaptation-related genes and regions identification
+    # we first perform the genome-wide scan, to find identify the similarly genomic regions, and differently genomic regions between North and South groups
+    vcftools --vcf North_clean.vcf --out North_pi --window-pi 50000
+    vcftools --vcf South_clean.vcf --out South_pi --window-pi 50000
+    vcftools --vcf North_clean.vcf --out North_tajimaD --TajimaD 50000
+    vcftools --vcf South_clean.vcf --out South_tajimaD --TajimaD 50000
+    vcftools --vcf typha_final_filter_variants_snp.recode.vcf --weir-fst-pop sample_S.txt --weir-fst-pop sample_N.txt --out fst_50kb --fst-window-size 50000 --keep sample_S.txt --keep sample_N.txt
+
+    # we visualize the pi, tajimaD and Fst results with the python scripts (see 3_16_plot_pi_tajimaD_fst.py in the scripts directory)
+
+    # Next, we performance the positive selection and selective sweep analysis with RAiSd
+    RAiSD: https://github.com/alachins/raisd
+    RAiSD -n North_clean -I North_clean.vcf -O North_clean -R
+    RAiSD -n South_clean -I South_clean.vcf -O South_clean -R
+    
+    # we visualize the RAiSD results with the python scripts (see 3_16_plot_raid.py in the scripts directory)
+
+    # here we find two large blocks for parallel sweep on chromosome 5, and genome-wide differentiation regions between North and South groups on chromosome 6.
+    # and identitied the core sweep region, genes both in parallel sweep regions and differentiation regions with python scripts
+    # see 3_16_sweep_region_chr5.py and 3_16_diff_region_chr6.py in the scripts directory
 
 
-#### 3.17 GWAS-based Northth-South differentiation related SNPs identification
-
+### 3.17 GWAS-based Northth-South differentiation related SNPs identification
+    vcf2gwas:https://github.com/frankvogt/vcf2gwas
+    vcf2gwas -v typha_final_filter_variants_snp.recode.vcf - -pf North_South.csv -ap -lmm -T 6 -nl
+    # We visualize the result and anotated the genes with the python scripts (see 3_17_plot_GWAS.py)
 
