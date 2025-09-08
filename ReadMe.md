@@ -403,7 +403,7 @@
 #### 3.10 admixture analysis
     admixturePipeline: https://github.com/stevemussmann/admixturePipeline
     admixturePipeline.py -m popmap.txt -v typha_final_filter_variants_snp.recode.vcf -k 2 -K 6 -R 8 -n 48
-    ## here we use the CLUMPAK pipeline to basicly visualize the admixture results, and than use pytho script to plot the result
+    ## here we use the CLUMPAK pipeline to basicly visualize the admixture results, and than use python script to plot the result
 
 #### 3.11 Infer the effective population size (Ne) history with PSMC
     PSMC: https://github.com/lh3/psmc
