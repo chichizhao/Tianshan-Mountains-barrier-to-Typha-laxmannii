@@ -427,6 +427,26 @@
     # and we plot the demographic history with python script (see 3_12_momi2_plot.py in the scripts directory)
 
 ### 3.13 Estimated effective migration surface (EEMS)
+    Ref：dipetkov/eems: Estimating Effective Migration Surfaces
+    runeems_snp requires three main input files:
+    *.diffs genetic distance matrix
+    *.coord sampling point coordinates
+    *.outer habitat coordinates
+    
+    #params-chain1.ini
+    datapath = ./xiangpu
+    mcmcpath = ./xiangpu-eems_result 
+    nIndiv = 126                
+    nSites = 1735925
+    nDemes = 800
+    diploid = false
+    numMCMCIter = 20000000
+    numBurnIter = 1000000
+    numThinIter = 9999
+
+    # run
+    ../syz_eems_src/runeems_snps --params ./params-chain1.ini
+
 
 
 ### 3.14 Niche analysis
