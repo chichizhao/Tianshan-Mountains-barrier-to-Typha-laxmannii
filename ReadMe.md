@@ -443,7 +443,7 @@
     # then we do the pca analysis of the enviromental factors with python scripts (see 3_14_envs_pca.py in the scripts directory)
 
 
-### 3.16 Adaptation-related genes and regions identification
+#### 3.16 Adaptation-related genes and regions identification
     # we first perform the genome-wide scan, to find identify the similarly genomic regions, and differently genomic regions between North and South groups
     vcftools --vcf North_clean.vcf --out North_pi --window-pi 50000
     vcftools --vcf South_clean.vcf --out South_pi --window-pi 50000
@@ -465,7 +465,7 @@
     # see 3_16_sweep_region_chr5.py and 3_16_diff_region_chr6.py in the scripts directory
 
 
-### 3.17 GWAS-based Northth-South differentiation related SNPs identification
+#### 3.17 GWAS-based Northth-South differentiation related SNPs identification
     vcf2gwas:https://github.com/frankvogt/vcf2gwas
     vcf2gwas -v typha_final_filter_variants_snp.recode.vcf - -pf North_South.csv -ap -lmm -T 6 -nl
     # We visualize the result and anotated the genes with the python scripts (see 3_17_plot_GWAS.py)
