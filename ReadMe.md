@@ -329,13 +329,13 @@
 #### here we got the all-kaks.results file, by this method, we can get the WGD events in *Oryza sativa*, *Sorghun bicolor*, and *Ananas comosus*, *Typha latifolia*, *Typha angustifolia* and *Typha laxmannii* genomes.
 
 
-### 3. Population Genomics Analysis
-#### 3.1 Materials
+## 3. Population Genomics Analysis
+### 3.1 Materials
   - Resequencing data of 126 individuals from 31 populations across the Tianshan mountain region
   - Reference genome: Typha_laxmannii.fasta
   - Outgroup genome: Typha angustifolia (GCF_048772165.1)
 
-#### 3.2 Build the index of the reference genome
+### 3.2 Build the index of the reference genome
     BWA: https://github.com/lh3/bwa
     Samtools: https://github.com/samtools/samtools
     GATK4: https://github.com/broadgsa/gatk
@@ -350,7 +350,7 @@
     fastp -i ${sample}_1.fq.gz -I ${sample}_2.fq.gz -o ${sample}_1.fq.gz -O ${sample}_2.fq.gz -h ${sample}.html -j ${sample}.json -w 8 -q 20 -u 20 -n 5 -l 50 -y 20 -x --umi --umi_loc read1 --umi_len 10;
     done 
 
-#### 3.4 Mapping the reads to the reference genome
+### 3.4 Mapping the reads to the reference genome
     BWA: https://github.com/lh3/bwa
     Samtools: https://github.com/samtools/samtools
     for sample in $(cat sample_list.txt);
@@ -360,13 +360,13 @@
     samtools index ${sample}_dedup.bam;
     done
 
-#### 3.5 Variant Calling
+### 3.5 Variant Calling
     GATK4:  https://github.com/broadgsa/gatk
     for sample in $(cat sample_list.txt);
     do java -Djava.io.tmpdir=/tmp -Xmx128g -jar path/gatk-package-4.2.4.1-local.jar HaplotypeCaller --native-pair-hmm-threads 16 -R typha_laxmannii.fa -I ${sample}_dedup.bam -ERC GVCF -O ${sample}.g.vcf.gz;
     done
 
-#### 3.6 Joint Genotyping
+### 3.6 Joint Genotyping
     GATK4:  https://github.com/broadgsa/gatk
     for file in $(cat list);do echo -en --variant ${file}.g.vcf' '; done > mergevcf
     echo  >> mergevcf
@@ -377,7 +377,7 @@
 #### here we go the raw variants vcf file, and we need to do the filter of the variants
     typha_raw.vcf.gz
 
-#### 3.7 Variant Filtering
+### 3.7 Variant Filtering
     GATK4: https://github.com/broadgsa/gatk
     java -Djava.io.tmpdir=/tmp -Xmx128g -jar path/gatk-package-4.2.4.1-local.jar VariantsToTable -R typha_laxmannii.fa -V typha_raw.vcf.gz -O typha_raw_variants.csv -F CHROM -F POS -F DP -F AF -F QUAL -F QD -F MQ -F FS -F SOR -F MQRankSum -F ReadPosRankSum
     java -Djava.io.tmpdir=/tmp -Xmx128g -jar path/gatk-package-4.2.4.1-local.jar VariantFiltration -R typha_laxmannii.fa -V typha_raw.vcf.gz -O typha_raw_recode.vcf.gz --filter-expression "DP < 30||DP>8000 || QD < 15.0 || MQ < 58.0 || FS > 2.0 || SOR > 3.0 || MQRankSum < -12.5 || ReadPosRankSum < -4.0" --filter-name "my_snp_filter"
@@ -388,11 +388,11 @@
 
 #### here we got the final SNPs file typha_final_filter_variants_snp.recode.vcf
 
-#### 3.8 group classification with pca
+### 3.8 group classification with pca
     #### here we use the Rscript to do the PCA analysis, please see 3_8_pca.r in the scripts directory.
 
 
-#### 3.9 build the phylogenetic tree of whole genome
+### 3.9 build the phylogenetic tree of whole genome
     vcf2phylip: https://github.com/edgardomortiz/vcf2phylip
     IQ-TREE: https://github.com/Cibiv/IQ-TREE
     python /path/vcf2phylip.py -i typha_final_filter_variants_snp.recode.vcf -o typha_filter_variants_snp.phy
@@ -400,12 +400,12 @@
 
 #### here we got the phylogenetic tree file typha_filter_variants_snp.phy.treefile, and we visualize the tree with itol (https://itol.embl.de/)
 
-#### 3.10 admixture analysis
+### 3.10 admixture analysis
     admixturePipeline: https://github.com/stevemussmann/admixturePipeline
     admixturePipeline.py -m popmap.txt -v typha_final_filter_variants_snp.recode.vcf -k 2 -K 6 -R 8 -n 48
     ## here we use the CLUMPAK pipeline to basicly visualize the admixture results, and than use python script to plot the result
 
-#### 3.11 Infer the effective population size (Ne) history with PSMC
+### 3.11 Infer the effective population size (Ne) history with PSMC
     PSMC: https://github.com/lh3/psmc
     for i in $(cat list)
     do
@@ -414,7 +414,7 @@
     psmc -N25 -t15 -r5 -p '4+25*2+4+6' -o ${i}.psmc ${i}.psmcfa
     python script/3_11_plot_psmc.py -namelist popmap.txt -psmcdir psmc_data -o psmc_result.svg
 
-#### 3.12 demographic history with momi2
+### 3.12 demographic history with momi2
     # we first construct the Fst-based NJ tree with the 126 individuals in five regional groups
     # we have the pop classification in five regions in the popmap_five_group.txt
     # generate the pairwise Fst matrix, and buid the NJ tree in Rscript (see 3_12_fst_nj_tree.r in the scripts directory)
@@ -426,10 +426,10 @@
     momi.ipynb
     # and we plot the demographic history with python script (see 3_12_momi2_plot.py in the scripts directory)
 
-#### 3.13 Estimated effective migration surface (EEMS)
+### 3.13 Estimated effective migration surface (EEMS)
 
 
-#### 3.14 Niche analysis
+### 3.14 Niche analysis
     Maxent: https://biodiversityinformatics.amnh.org/open_source/maxent/
     wordclim bio data: http://www.worldclim.com/past; https://www.worldclim.com/paleo-climate1;
     Last inter-glacial (LIG; ~120,000 - 140,000 years BP) : http://biogeo.ucdavis.edu/data/climate/worldclim/1_4/grid/pst/lig/lig_30s_bio.zip
@@ -437,13 +437,13 @@
     Mid-Holocene (~6000 BP):http://biogeo.ucdavis.edu/data/climate/cmip5/mid/cnmidbi_2-5m.zip
     Current climate: https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip
     # we preformance the niche build with the maxent in the arcgis software.
-#### 3.15 Environmental factor analysis
+### 3.15 Environmental factor analysis
 
     # we first extract the enviromental date of sites, and performance the t-test between North and South groups with python scripts (see 3_14_t_test4envs.py in the scripts directory)
     # then we do the pca analysis of the enviromental factors with python scripts (see 3_14_envs_pca.py in the scripts directory)
 
 
-#### 3.16 Adaptation-related genes and regions identification
+### 3.16 Adaptation-related genes and regions identification
     # we first perform the genome-wide scan, to find identify the similarly genomic regions, and differently genomic regions between North and South groups
     vcftools --vcf North_clean.vcf --out North_pi --window-pi 50000
     vcftools --vcf South_clean.vcf --out South_pi --window-pi 50000
@@ -465,7 +465,7 @@
     # see 3_16_sweep_region_chr5.py and 3_16_diff_region_chr6.py in the scripts directory
 
 
-#### 3.17 GWAS-based Northth-South differentiation related SNPs identification
+### 3.17 GWAS-based Northth-South differentiation related SNPs identification
     vcf2gwas:https://github.com/frankvogt/vcf2gwas
     vcf2gwas -v typha_final_filter_variants_snp.recode.vcf - -pf North_South.csv -ap -lmm -T 6 -nl
     # We visualize the result and anotated the genes with the python scripts (see 3_17_plot_GWAS.py)
