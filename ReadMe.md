@@ -258,7 +258,7 @@
 
 ### 2.5 Genome analysis
 
-#### 2.5.1 species phylogenetic tree
+#### 2.5.1 Species phylogenetic tree
 #### Species
 | Assembly  | Species   | Source |
 | :---: | :---: | :---: |
