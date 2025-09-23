@@ -48,7 +48,7 @@
     NextPolish: https://github.com/Nextomics/NextPolish
     nextPolish NextPolish.cfg
 
-#### estimate the assembly quality with BUSCO 
+#### Estimate the assembly quality with BUSCO 
     BUSCO: https://busco.ezlab.org/
     busco -i typha_polish.fasta -l embryophyta_odb10 -o busco_polish -m genome -c 40
 
@@ -343,7 +343,7 @@
     samtools faidx Typha_laxmannii.fasta
     java -Djava.io.tmpdir=/tmp -Xmx32g -jar path/gatk-package-4.2.4.1-local.jar CreateSequenceDictionary -R typha_laxmannii.fa -O typha.dict 
   
-#### 3.3 quality control of the raw data
+#### 3.3 Quality control of the raw data
     fastp: https://github.com/OpenGene/fastp
     for sample in $(cat sample_list.txt);
     do 
