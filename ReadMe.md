@@ -475,8 +475,8 @@
 
     # Next, we performance the positive selection and selective sweep analysis with RAiSd
     RAiSD: https://github.com/alachins/raisd
-    RAiSD -n North_clean -I North_clean.vcf -O North_clean -R
-    RAiSD -n South_clean -I South_clean.vcf -O South_clean -R
+    RAiSD -n North_clean -I North_clean.vcf -R
+    RAiSD -n South_clean -I South_clean.vcf -R
     
     # we visualize the RAiSD results with the python scripts (see 3_16_plot_raid.py in the scripts directory)
 
